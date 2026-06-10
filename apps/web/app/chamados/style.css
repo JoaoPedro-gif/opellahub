@@ -1,0 +1,300 @@
+.chamados-layout {
+    display: flex;
+    min-height: 100vh;
+    background: #f4f6f5;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 280px;
+
+    background: linear-gradient(
+        145deg,
+        #0b3d2e 0%,
+        #07251c 50%,
+        #041711 100%
+    );
+
+    padding: 40px 25px;
+
+    color: white;
+}
+
+.logo {
+    font-size: 38px;
+    font-weight: bold;
+    margin-bottom: 60px;
+}
+
+.logo span {
+    color: white;
+    text-shadow:
+        0 0 4px rgba(109, 255, 154, 0.6),
+        0 0 8px rgba(109, 255, 154, 0.4);
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar-menu button {
+    width: 100%;
+    height: 52px;
+    border: none;
+    border-radius: 14px;
+    background: transparent;
+    color: white;
+    text-align: left;
+    padding: 0 22px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.sidebar-menu button:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+.sidebar-menu button.active {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* CONTEÚDO */
+
+.tickets-page {
+    flex: 1;
+    padding: 35px;
+    background: #f4f6f5;
+    min-height: 100vh;
+}
+
+/* HEADER */
+
+.tickets-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.tickets-header h1 {
+    font-size: 38px;
+    color: #0b3d2e;
+}
+
+.tickets-header p {
+    color: #666;
+    margin-top: 6px;
+}
+
+.new-ticket-btn {
+    height: 50px;
+    padding: 0 24px;
+    border: none;
+    border-radius: 14px;
+    background: #0b3d2e;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.new-ticket-btn:hover {
+    background: #145c43;
+}
+
+/* FILTROS */
+
+.tickets-filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.tickets-filters input {
+    height: 50px;
+    padding: 0 18px;
+    border: none;
+    border-radius: 12px;
+    background: white;
+    outline: none;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+/* TABELA */
+
+.tickets-table-wrapper {
+    background: white;
+    border-radius: 18px;
+    overflow-x: auto;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #0b3d2e;
+    color: white;
+}
+
+th,
+td {
+    padding: 22px 20px;
+    text-align: left;
+    font-size: 14px;
+}
+
+tbody tr {
+    border-bottom: 1px solid #ececec;
+    transition: 0.2s;
+}
+
+tbody tr:hover {
+    background: #f9fbfa;
+}
+
+/* USER */
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #0b3d2e;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* STATUS */
+
+.status {
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.status.processing {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status.finished {
+    background: #d4edda;
+    color: #155724;
+}
+
+/* PRIORIDADE */
+
+.priority {
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.priority.low {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.priority.medium {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.priority.high {
+    background: #fed7aa;
+    color: #c2410c;
+}
+
+.priority.critical {
+    background: #fecaca;
+    color: #b91c1c;
+}
+
+/* BOTÃO EDITAR */
+
+.edit-btn {
+    border: none;
+    border-radius: 10px;
+    background: #0b3d2e;
+    color: white;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.edit-btn:hover {
+    background: #145c43;
+}
+
+/* CUSTOM SELECT */
+
+.custom-select {
+    position: relative;
+}
+
+.custom-select summary {
+    list-style: none;
+    width: 180px;
+    height: 50px;
+    background: white;
+    border-radius: 12px;
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    color: #333;
+    font-size: 15px;
+}
+
+.custom-select summary::-webkit-details-marker {
+    display: none;
+}
+
+.custom-options {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 220px;
+    background: white;
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 100;
+}
+
+.custom-options label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.custom-options input {
+    accent-color: #0b3d2e;
+}
+
