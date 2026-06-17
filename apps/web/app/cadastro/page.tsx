@@ -8,46 +8,130 @@ export default function CadastroPage() {
 
   const router = useRouter();
 
-  const generateCode = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString();
-  };
-
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [preview, setPreview] = useState<string | null>(null);
 
-  const handleSubmit = async (e: any) => {
+  const generateCode = () => {
+    return Math.floor(
+      100000 + Math.random() * 900000
+    ).toString();
+  };
+
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+
     e.preventDefault();
 
-    if (!email.includes("@opella")) {
-      setError("Use um email @opella");
+    setError("");
+
+    if (!email.endsWith("@opella.com")) {
+      setError(
+        "Use um email corporativo @opella.com"
+      );
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("As senhas não coincidem.");
       return;
     }
 
     const code = generateCode();
 
-    // salvar código temporário
-    localStorage.setItem("verificationCode", code);
-    localStorage.setItem("email", email);
+    localStorage.setItem(
+      "verificationCode",
+      code
+    );
 
-    // enviar email
-    await fetch("/api/send-code", {
-      method: "POST",
-      body: JSON.stringify({ email, code }),
-    });
+    localStorage.setItem(
+      "verificationEmail",
+      email
+    );
 
-    alert("Código enviado!");
+    try {
 
-    router.push("/verificar-codigo");
+      const response = await fetch(
+        "/api/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            username,
+            email,
+            password,
+            code,
+            avatar: preview,
+          }),
+        }
+      );
+
+      const responseText =
+        await response.text();
+
+      console.log(
+        "Resposta API:",
+        responseText
+      );
+
+      const result =
+        JSON.parse(responseText);
+
+      if (!result.success) {
+        setError(
+          "Erro ao salvar usuário."
+        );
+        return;
+      }
+
+      // envio do código por email
+      await fetch("/api/send-code", {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          code,
+        }),
+      });
+
+      router.push(
+        "/verificar-codigo"
+      );
+
+    } catch (err) {
+
+      console.error(err);
+
+      setError(
+        "Erro ao criar a conta."
+      );
+    }
   };
 
-  const handleImage = (e: any) => {
-    const file = e.target.files[0];
+  const handleImage = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
 
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setPreview(imageUrl);
-    }
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    const imageUrl =
+      URL.createObjectURL(file);
+
+    setPreview(imageUrl);
   };
 
   return (
@@ -64,7 +148,11 @@ export default function CadastroPage() {
         <label className="avatar-upload">
 
           {preview ? (
-            <img src={preview} className="avatar-img" />
+            <img
+              src={preview}
+              alt="Foto de perfil"
+              className="avatar-img"
+            />
           ) : (
             <div className="avatar-placeholder">
               👤
@@ -82,27 +170,65 @@ export default function CadastroPage() {
         <form onSubmit={handleSubmit}>
 
           <label>Nome</label>
-          <input type="text" placeholder="Seu nome completo" required />
+          <input
+            type="text"
+            placeholder="Seu nome completo"
+            value={name}
+            onChange={(e) =>
+              setName(e.target.value)
+            }
+            required
+          />
 
           <label>Usuário</label>
-          <input type="text" placeholder="Como deseja ser chamado" required />
+          <input
+            type="text"
+            placeholder="Como deseja ser chamado"
+            value={username}
+            onChange={(e) =>
+              setUsername(e.target.value)
+            }
+            required
+          />
 
           <label>E-mail</label>
           <input
             type="email"
-            placeholder="seuemail@opella"
+            placeholder="usuario@opella.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
             required
           />
 
           <label>Senha</label>
-          <input type="password" placeholder="Senha" required />
+          <input
+            type="password"
+            placeholder="Senha"
+            value={password}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
+            required
+          />
 
           <label>Confirmar Senha</label>
-          <input type="password" placeholder="Confirme a senha" required />
+          <input
+            type="password"
+            placeholder="Confirme a senha"
+            value={confirmPassword}
+            onChange={(e) =>
+              setConfirmPassword(e.target.value)
+            }
+            required
+          />
 
-          {error && <span className="error">{error}</span>}
+          {error && (
+            <span className="error">
+              {error}
+            </span>
+          )}
 
           <button type="submit">
             CRIAR CONTA
@@ -112,7 +238,11 @@ export default function CadastroPage() {
 
         <p>
           Já possui conta?{" "}
-          <span onClick={() => router.push("/login")}>
+          <span
+            onClick={() =>
+              router.push("/login")
+            }
+          >
             Fazer login
           </span>
         </p>

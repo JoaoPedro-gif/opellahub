@@ -11,22 +11,75 @@ export default function VerificarCodigoPage() {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
 
-  const correctCode = localStorage.getItem("verificationCode");
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
 
-
-  const handleSubmit = (e: any) => {
     e.preventDefault();
-
-    if (code !== correctCode) {
-      setError("Código inválido");
-      return;
-    }
 
     setError("");
 
-    alert("Cadastro confirmado!");
+    try {
 
-    router.push("/dashboard");
+      const email = localStorage.getItem(
+        "verificationEmail"
+      );
+
+      if (!email) {
+        setError(
+          "E-mail de verificação não encontrado."
+        );
+        return;
+      }
+
+      const response = await fetch(
+        "/api/verify",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            code,
+          }),
+        }
+      );
+
+      const result =
+        await response.json();
+
+      if (!result.success) {
+        setError(
+          result.message ||
+            "Código inválido."
+        );
+        return;
+      }
+
+      localStorage.removeItem(
+        "verificationCode"
+      );
+
+      localStorage.removeItem(
+        "verificationEmail"
+      );
+
+      alert(
+        "Cadastro confirmado com sucesso!"
+      );
+
+      router.push("/login");
+
+    } catch (err) {
+
+      console.error(err);
+
+      setError(
+        "Erro ao validar o código."
+      );
+    }
   };
 
   return (
@@ -34,7 +87,6 @@ export default function VerificarCodigoPage() {
 
       <div className="login-card">
 
-        {/* LOGO */}
         <div className="brand">
           Opella<span>Hub</span>
         </div>
@@ -52,10 +104,17 @@ export default function VerificarCodigoPage() {
             placeholder="123456"
             maxLength={6}
             value={code}
-            onChange={(e) => setCode(e.target.value)}
+            onChange={(e) =>
+              setCode(e.target.value)
+            }
+            required
           />
 
-          {error && <span className="error">{error}</span>}
+          {error && (
+            <span className="error">
+              {error}
+            </span>
+          )}
 
           <button type="submit">
             CONFIRMAR

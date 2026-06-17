@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import "./style.css";
 import { useRouter } from "next/navigation";
@@ -8,6 +8,19 @@ import { useRouter } from "next/navigation";
 export default function ChamadosPage() {
 
   const router = useRouter();
+
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+
+    const storedUser =
+      localStorage.getItem("user");
+
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+
+  }, []);
 
   const isAdmin = true;
 
@@ -85,12 +98,36 @@ export default function ChamadosPage() {
             </p>
           </div>
 
-          <button
-            className="new-ticket-btn"
-            onClick={() => router.push("/abrir-chamados")}
-          >
-            + Novo chamado
-          </button>
+          <div className="header-actions">
+
+            <div className="logged-user">
+
+              {user?.avatar ? (
+                <img
+                  src={user.avatar}
+                  alt="Foto do usuário"
+                  className="logged-user-avatar"
+                />
+              ) : (
+                <div className="logged-user-avatar-placeholder">
+                  👤
+                </div>
+              )}
+
+              <span className="logged-user-name">
+                {user?.username || "Usuário"}
+              </span>
+
+            </div>
+
+            <button
+              className="new-ticket-btn"
+              onClick={() => router.push("/abrir-chamados")}
+            >
+              + Novo chamado
+            </button>
+
+          </div>
 
         </div>
 

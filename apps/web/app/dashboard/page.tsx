@@ -4,19 +4,30 @@ import "../chamados/style.css";
 import "./style.css";
 
 import Sidebar from "@/components/Sidebar";
+import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
+
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+
+    const storedUser =
+      localStorage.getItem("user");
+
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+
+  }, []);
 
   return (
     <main className="chamados-layout">
 
-      {/* ✅ SIDEBAR PADRÃO */}
       <Sidebar active="dashboard" />
 
-      {/* CONTEÚDO */}
       <section className="dashboard-content">
 
-        {/* HEADER */}
         <header className="dashboard-header">
 
           <h1>
@@ -24,12 +35,27 @@ export default function DashboardPage() {
           </h1>
 
           <div className="profile">
-            OP
+
+            {user?.avatar ? (
+              <img
+                src={user.avatar}
+                alt="Perfil"
+                className="profile-avatar"
+              />
+            ) : (
+              <div className="profile-avatar-placeholder">
+                👤
+              </div>
+            )}
+
+            <span className="profile-name">
+              {user?.username || "Usuário"}
+            </span>
+
           </div>
 
         </header>
 
-        {/* CARDS */}
         <div className="cards-grid">
 
           <div className="dashboard-card">
@@ -54,7 +80,6 @@ export default function DashboardPage() {
 
         </div>
 
-        {/* TABELA */}
         <div className="recent-tickets">
 
           <div className="tickets-header">

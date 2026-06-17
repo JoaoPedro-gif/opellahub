@@ -109,20 +109,41 @@
 }
 
 .profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-avatar,
+.profile-avatar-placeholder {
     width: 50px;
     height: 50px;
 
     border-radius: 50%;
 
-    background: #0b3d2e;
-
-    color: white;
+    overflow: hidden;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    font-weight: bold;
+    background: #0b3d2e;
+
+    color: white;
+
+    font-size: 22px;
+
+    flex-shrink: 0;
+}
+
+.profile-avatar {
+    object-fit: cover;
+}
+
+.profile-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #0b3d2e;
 }
 
 /* CARDS */

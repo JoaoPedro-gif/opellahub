@@ -298,3 +298,46 @@ tbody tr:hover {
     accent-color: #0b3d2e;
 }
 
+
+.header-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.logged-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logged-user-avatar,
+.logged-user-avatar-placeholder {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    background: #0b3d2e;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+}
+
+.logged-user-avatar {
+    object-fit: cover;
+}
+
+.logged-user-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #0b3d2e;
+}
