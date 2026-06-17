@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import Sidebar from "@/components/Sidebar";
 import "./style.css";
-import Link from "next/link";
-
+import { useRouter } from "next/navigation";
 
 export default function ChamadosPage() {
+
+  const router = useRouter();
 
   const isAdmin = true;
 
@@ -20,7 +22,6 @@ export default function ChamadosPage() {
       status: "Em andamento",
       priority: "Alta",
     },
-
     {
       id: "#1025",
       user: "Camila Nogueira",
@@ -31,7 +32,6 @@ export default function ChamadosPage() {
       status: "Finalizado",
       priority: "Média",
     },
-
     {
       id: "#1026",
       user: "João Pedro",
@@ -44,80 +44,32 @@ export default function ChamadosPage() {
     },
   ];
 
-const [statusFilter, setStatusFilter] = useState<string[]>([]);
+  const [statusFilter, setStatusFilter] = useState<string[]>([]);
+  const [priorityFilter, setPriorityFilter] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-const [priorityFilter, setPriorityFilter] = useState<string[]>([]);
+  const filteredTickets = tickets.filter((ticket) => {
 
+    const statusMatch =
+      statusFilter.length === 0 ||
+      statusFilter.includes(ticket.status);
 
-const [searchTerm, setSearchTerm] = useState("");
+    const priorityMatch =
+      priorityFilter.length === 0 ||
+      priorityFilter.includes(ticket.priority);
 
-const [menuOpen, setMenuOpen] = useState(false);
+    const searchMatch =
+      ticket.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ticket.id.toLowerCase().includes(searchTerm.toLowerCase());
 
-
-const filteredTickets = tickets.filter((ticket) => {
-
-  const statusMatch =
-    statusFilter.length === 0 ||
-    statusFilter.includes(ticket.status);
-
-  const priorityMatch =
-    priorityFilter.length === 0 ||
-    priorityFilter.includes(ticket.priority);
-
-  const searchMatch =
-    ticket.user
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase()) ||
-
-    ticket.id
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-
-  return (
-    statusMatch &&
-    priorityMatch &&
-    searchMatch
-  );
-});
+    return statusMatch && priorityMatch && searchMatch;
+  });
 
   return (
     <main className="chamados-layout">
-      {/* SIDEBAR */}
-      <aside className={`sidebar ${menuOpen ? "open" : ""}`}>
-        <div className="logo">
-          Opella<span>Hub</span>
-        </div>
 
-        <nav className="sidebar-menu">
-
-          <Link href="/dashboard">
-          <button>
-            Dashboard
-          </button>
-        </Link>
-
-        <Link href="/chamados">
-          <button className="active">
-            Chamados
-          </button>
-        </Link>
-
-          <button>Criar Chamado</button>
-
-          <button>Reports</button>
-
-          <button>Configurações</button>
-
-        </nav>
-      </aside>
-
-      {menuOpen && (
-        <div
-          className="sidebar-overlay"
-          onClick={() => setMenuOpen(false)}
-        ></div>
-      )}
-
+      {/* ✅ SIDEBAR REUTILIZADO */}
+      <Sidebar active="chamados" />
 
       {/* CONTEÚDO */}
       <section className="tickets-page">
@@ -133,200 +85,130 @@ const filteredTickets = tickets.filter((ticket) => {
             </p>
           </div>
 
-          <button className="new-ticket-btn">
+          <button
+            className="new-ticket-btn"
+            onClick={() => router.push("/abrir-chamados")}
+          >
             + Novo chamado
           </button>
 
         </div>
 
         {/* FILTROS */}
-        
-        
-      <div className="tickets-filters">
+        <div className="tickets-filters">
 
-        
-        <input
-          type="text"
-          placeholder="Pesquisar chamado..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+          <input
+            type="text"
+            placeholder="Pesquisar chamado..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
 
+          {/* STATUS */}
+          <div className="custom-select">
+            <details>
+              <summary>
+                {statusFilter.length > 0
+                  ? `${statusFilter.length} status selecionados`
+                  : "Todos os status"}
+              </summary>
 
+              <div className="custom-options">
 
-        <div className="custom-select">
-
-          <details>
-
-            <summary>
-              {statusFilter.length > 0
-                ? `${statusFilter.length} status selecionados`
-                : "Todos os status"}
-            </summary>
-
-            <div className="custom-options">
-
-              <label>
-
-                <input
-                  type="checkbox"
-
-                  checked={statusFilter.length === 3}
-
-                  onChange={(e) => {
-
-                    if (e.target.checked) {
-
-                      setStatusFilter([
-                        "Aberto",
-                        "Em andamento",
-                        "Finalizado"
-                      ]);
-
-                    } else {
-
-                      setStatusFilter([]);
-                    }
-                  }}
-                />
-
-                Selecionar todos
-
-              </label>
-
-              {[
-                "Aberto",
-                "Em andamento",
-                "Finalizado"
-              ].map((status) => (
-
-                <label key={status}>
-
+                <label>
                   <input
                     type="checkbox"
-
-                    checked={statusFilter.includes(status)}
-
+                    checked={statusFilter.length === 3}
                     onChange={(e) => {
-
                       if (e.target.checked) {
-
                         setStatusFilter([
-                          ...statusFilter,
-                          status
+                          "Aberto",
+                          "Em andamento",
+                          "Finalizado"
                         ]);
-
                       } else {
-
-                        setStatusFilter(
-                          statusFilter.filter(
-                            (item) => item !== status
-                          )
-                        );
+                        setStatusFilter([]);
                       }
-
                     }}
                   />
-
-                  {status}
-
+                  Selecionar todos
                 </label>
 
-              ))}
+                {["Aberto", "Em andamento", "Finalizado"].map((status) => (
+                  <label key={status}>
+                    <input
+                      type="checkbox"
+                      checked={statusFilter.includes(status)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setStatusFilter([...statusFilter, status]);
+                        } else {
+                          setStatusFilter(
+                            statusFilter.filter((item) => item !== status)
+                          );
+                        }
+                      }}
+                    />
+                    {status}
+                  </label>
+                ))}
+              </div>
+            </details>
+          </div>
 
-            </div>
+          {/* PRIORIDADE */}
+          <div className="custom-select">
+            <details>
+              <summary>
+                {priorityFilter.length > 0
+                  ? `${priorityFilter.length} prioridades`
+                  : "Todas prioridades"}
+              </summary>
 
-          </details>
+              <div className="custom-options">
 
-        </div>
-
-        <div className="custom-select">
-
-          <details>
-
-            <summary>
-              {priorityFilter.length > 0
-                ? `${priorityFilter.length} prioridades`
-                : "Todas prioridades"}
-            </summary>
-
-            <div className="custom-options">
-
-              <label>
-
-                <input
-                  type="checkbox"
-
-                  checked={priorityFilter.length === 4}
-
-                  onChange={(e) => {
-
-                    if (e.target.checked) {
-
-                      setPriorityFilter([
-                        "Baixa",
-                        "Média",
-                        "Alta",
-                        "Crítica"
-                      ]);
-
-                    } else {
-
-                      setPriorityFilter([]);
-                    }
-                  }}
-                />
-
-                Selecionar todos
-
-              </label>
-
-              {[
-                "Baixa",
-                "Média",
-                "Alta",
-                "Crítica"
-              ].map((priority) => (
-
-                <label key={priority}>
-
+                <label>
                   <input
                     type="checkbox"
-
-                    checked={priorityFilter.includes(priority)}
-
+                    checked={priorityFilter.length === 4}
                     onChange={(e) => {
-
                       if (e.target.checked) {
-
                         setPriorityFilter([
-                          ...priorityFilter,
-                          priority
+                          "Baixa",
+                          "Média",
+                          "Alta",
+                          "Crítica"
                         ]);
-
                       } else {
-
-                        setPriorityFilter(
-                          priorityFilter.filter(
-                            (item) => item !== priority
-                          )
-                        );
+                        setPriorityFilter([]);
                       }
-
                     }}
                   />
-
-                  {priority}
-
+                  Selecionar todos
                 </label>
 
-              ))}
-
-            </div>
-
-          </details>
-
+                {["Baixa", "Média", "Alta", "Crítica"].map((priority) => (
+                  <label key={priority}>
+                    <input
+                      type="checkbox"
+                      checked={priorityFilter.includes(priority)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setPriorityFilter([...priorityFilter, priority]);
+                        } else {
+                          setPriorityFilter(
+                            priorityFilter.filter((item) => item !== priority)
+                          );
+                        }
+                      }}
+                    />
+                    {priority}
+                  </label>
+                ))}
+              </div>
+            </details>
           </div>
+
         </div>
 
         {/* TABELA */}
@@ -343,16 +225,11 @@ const filteredTickets = tickets.filter((ticket) => {
                 <th>Data</th>
                 <th>Status</th>
                 <th>Prioridade</th>
-
-                {isAdmin && (
-                  <th>Editar</th>
-                )}
-
+                {isAdmin && <th>Editar</th>}
               </tr>
             </thead>
 
             <tbody>
-
               {filteredTickets.map((ticket) => (
 
                 <tr key={ticket.id}>
@@ -361,26 +238,18 @@ const filteredTickets = tickets.filter((ticket) => {
 
                   <td>
                     <div className="user-info">
-
                       <div className="avatar">
                         {ticket.initials}
                       </div>
-
-                      <span>
-                        {ticket.user}
-                      </span>
-
+                      <span>{ticket.user}</span>
                     </div>
                   </td>
 
                   <td>{ticket.type}</td>
-
                   <td>{ticket.description}</td>
-
                   <td>{ticket.date}</td>
 
                   <td>
-
                     <span
                       className={`status ${
                         ticket.status === "Finalizado"
@@ -392,11 +261,9 @@ const filteredTickets = tickets.filter((ticket) => {
                     >
                       {ticket.status}
                     </span>
-
                   </td>
 
                   <td>
-
                     <span
                       className={`priority ${
                         ticket.priority === "Crítica"
@@ -410,7 +277,6 @@ const filteredTickets = tickets.filter((ticket) => {
                     >
                       {ticket.priority}
                     </span>
-
                   </td>
 
                   {isAdmin && (
@@ -424,13 +290,11 @@ const filteredTickets = tickets.filter((ticket) => {
                 </tr>
 
               ))}
-
             </tbody>
 
           </table>
 
         </div>
-        
 
       </section>
 

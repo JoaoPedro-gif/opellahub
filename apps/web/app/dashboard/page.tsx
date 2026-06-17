@@ -1,46 +1,17 @@
+"use client";
+
+import "../chamados/style.css";
 import "./style.css";
-import Link from "next/link";
+
+import Sidebar from "@/components/Sidebar";
 
 export default function DashboardPage() {
+
   return (
-    <main className="dashboard-page">
+    <main className="chamados-layout">
 
-      {/* SIDEBAR */}
-      <aside className="sidebar">
-
-        <div className="logo">
-          Opella<span>Hub</span>
-        </div>
-
-      <nav className="sidebar-menu">
-
-          <Link href="/dashboard">
-          <button className="active">
-            Dashboard
-          </button>
-        </Link>
-
-        <Link href="/chamados">
-          <button>
-            Chamados
-          </button>
-        </Link>
-
-          <button>
-            Criar Chamado
-          </button>
-
-          <button>
-            Reports
-          </button>
-
-          <button>
-            Configurações
-          </button>
-
-      </nav>
-
-      </aside>
+      {/* ✅ SIDEBAR PADRÃO */}
+      <Sidebar active="dashboard" />
 
       {/* CONTEÚDO */}
       <section className="dashboard-content">

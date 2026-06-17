@@ -33,12 +33,41 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
+/* LOGO */
+
+.brand {
+    text-align: center;
+
+    font-size: 28px;
+    font-weight: bold;
+
+    margin-bottom: 5px;
+
+    color: #0b3d2e;
+}
+
+.brand span {
+    color: #0b3d2e;
+
+    text-shadow:
+        0 0 4px rgba(0, 150, 100, 0.4),
+        0 0 8px rgba(0, 150, 100, 0.3);
+}
+
 /* TÍTULO */
 
 .login-card h2 {
     text-align: center;
     color: #0b3d2e;
-    font-size: 28px;
+    font-size: 26px;
+}
+
+/* TEXTO */
+
+.info-text {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
 }
 
 /* FORM */
@@ -49,23 +78,21 @@
     gap: 12px;
 }
 
-/* LABEL */
-
-.login-card label {
-    font-size: 14px;
-    color: #333;
-}
-
 /* INPUT */
 
 .login-card input {
-    height: 45px;
+    height: 50px;
 
     border-radius: 10px;
 
     border: 1px solid #ddd;
 
     padding: 0 12px;
+
+    font-size: 16px;
+
+    text-align: center;
+    letter-spacing: 6px;
 
     outline: none;
 
@@ -100,43 +127,10 @@
     background: #145c43;
 }
 
-/* FOOTER */
+/* ERRO */
 
-.login-card p {
+.error {
+    color: red;
+    font-size: 13px;
     text-align: center;
-    font-size: 14px;
-    color: #666;
-}
-
-
-.login-card span {
-    color: #0b3d2e;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-
-.login-card span:hover {
-    text-decoration: underline;
-}
-
-/* LOGO OPPELLAHUB */
-
-.brand {
-    text-align: center;
-
-    font-size: 28px;
-    font-weight: bold;
-
-    margin-bottom: 10px;
-
-    color: #0b3d2e;
-}
-
-.brand span {
-    color: #0b3d2e;
-
-    text-shadow:
-        0 0 4px rgba(13, 201, 138, 0.4),
-        0 0 8px rgba(0, 150, 100, 0.3);
 }

@@ -1,55 +1,50 @@
+"use client";
+
 import "./style.css";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+
+  const router = useRouter();
+
   return (
     <main className="login-page">
 
-      <div className="login-container">
+      
+        <div className="login-card">
 
-        {/* LADO ESQUERDO */}
-        <div className="login-left">
+          <div className="brand">
+            Opella<span>Hub</span>
+          </div>
 
-          <h1>
-            Bem-vindo ao <span>OpellaHub</span>
-            </h1>
+          <h2>Login</h2>
 
-          <p>Acesse sua conta agora</p>
 
-          <button>
-            ENTRAR
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            router.push("/dashboard");
+          }}
+        >
+
+          <label>E-mail</label>
+          <input type="text" placeholder="e-mail" />
+
+          <label>Senha</label>
+          <input type="password" placeholder="senha" />
+
+          <button type="submit">
+            LOGIN
           </button>
 
-        </div>
+        </form>
 
-        {/* LADO DIREITO */}
-        <div className="login-right">
-
-          <h2>CRIAR SUA CONTA</h2>
-
-          <form>
-
-            <input
-              type="text"
-              placeholder="NOME"
-            />
-
-            <input
-              type="email"
-              placeholder="E-MAIL"
-            />
-
-            <input
-              type="password"
-              placeholder="SENHA"
-            />
-
-            <button type="submit">
-              CADASTRAR
-            </button>
-
-          </form>
-
-        </div>
+        <p>
+          Não possui conta?{" "}
+          <span onClick={() => router.push("/cadastro")}>
+            Cadastre-se
+          </span>
+        </p>
 
       </div>
 
