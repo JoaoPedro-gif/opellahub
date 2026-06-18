@@ -113,7 +113,7 @@ export default function LoginPage() {
           Não possui conta?{" "}
           <span
             onClick={() =>
-              router.push("/dashboard")
+              router.push("/cadastro")
             }
           >
             Cadastre-se
