@@ -10,6 +10,8 @@ export default function VerificarCodigoPage() {
 
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
+  const [verified, setVerified] = useState(false);
+  const [username, setUsername] = useState("");
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
@@ -58,6 +60,10 @@ export default function VerificarCodigoPage() {
         return;
       }
 
+      setUsername(
+        localStorage.getItem("username") || ""
+      );
+
       localStorage.removeItem(
         "verificationCode"
       );
@@ -66,11 +72,7 @@ export default function VerificarCodigoPage() {
         "verificationEmail"
       );
 
-      alert(
-        "Cadastro confirmado com sucesso!"
-      );
-
-      router.push("/login");
+      setVerified(true);
 
     } catch (err) {
 
@@ -81,6 +83,42 @@ export default function VerificarCodigoPage() {
       );
     }
   };
+
+  if (verified) {
+    return (
+      <main className="login-page">
+
+        <div className="login-card welcome-card">
+
+          <div className="brand">
+            Opella<span>Hub</span>
+          </div>
+
+          <h2>
+            ✅ Cadastro Confirmado
+          </h2>
+
+          <p className="welcome-text">
+            Bem-vindo <strong>{username}</strong>!
+          </p>
+
+          <p className="welcome-text">
+            Sua plataforma de chamados e suporte.
+          </p>
+
+          <button
+            onClick={() =>
+              router.push("/login")
+            }
+          >
+            IR PARA LOGIN
+          </button>
+
+        </div>
+
+      </main>
+    );
+  }
 
   return (
     <main className="login-page">
