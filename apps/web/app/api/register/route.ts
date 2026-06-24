@@ -1,4 +1,5 @@
 import clientPromise from "@/lib/mongodb";
+import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
 
@@ -10,15 +11,46 @@ export async function POST(req: Request) {
 
     const db = client.db("opellahub");
 
-    const result = await db.collection("users").insertOne({
-      name: data.name,
-      username: data.username,
-      email: data.email,
-      password: data.password,
-      verified: false,
-      code: data.code,
-      createdAt: new Date(),
-    });
+    // Verifica se já existe usuário com o mesmo e-mail
+    const existingUser = await db
+      .collection("users")
+      .findOne({
+        email: data.email,
+      });
+
+    if (existingUser) {
+      return Response.json(
+        {
+          success: false,
+          message: "Este e-mail já está cadastrado.",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    // Criptografa a senha
+    const hashedPassword =
+      await bcrypt.hash(
+        data.password,
+        10
+      );
+
+    const result = await db
+      .collection("users")
+      .insertOne({
+        name: data.name,
+        username: data.username,
+        email: data.email,
+
+        // senha criptografada
+        password: hashedPassword,
+
+        verified: false,
+        code: data.code,
+        createdAt: new Date(),
+      });
 
     return Response.json({
       success: true,
@@ -27,7 +59,10 @@ export async function POST(req: Request) {
 
   } catch (error) {
 
-    console.error("REGISTER ERROR:", error);
+    console.error(
+      "REGISTER ERROR:",
+      error
+    );
 
     return Response.json(
       {

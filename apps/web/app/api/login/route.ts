@@ -1,4 +1,5 @@
 import clientPromise from "@/lib/mongodb";
+import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
   try {
@@ -19,7 +20,13 @@ export async function POST(req: Request) {
       });
     }
 
-    if (user.password !== password) {
+    const validPassword =
+      await bcrypt.compare(
+        password,
+        user.password
+      );
+
+    if (!validPassword) {
       return Response.json({
         success: false,
         message: "Senha inválida.",
