@@ -15,6 +15,8 @@ export default function CadastroPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [preview, setPreview] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const generateCode = () => {
     return Math.floor(
@@ -37,6 +39,16 @@ export default function CadastroPage() {
       return;
     }
 
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      setError(
+        "A senha deve ter no mínimo 8 caracteres, 1 letra maiúscula e 1 caractere especial."
+      );
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError("As senhas não coincidem.");
       return;
@@ -52,6 +64,10 @@ export default function CadastroPage() {
     localStorage.setItem(
       "verificationEmail",
       email
+    );
+    localStorage.setItem(
+      "username",
+      username
     );
 
     try {
@@ -203,26 +219,72 @@ export default function CadastroPage() {
           />
 
           <label>Senha</label>
-          <input
-            type="password"
-            placeholder="Senha"
-            value={password}
-            onChange={(e) =>
-              setPassword(e.target.value)
-            }
-            required
-          />
+          <div className="password-wrapper">
+
+            <input
+              type={
+                showPassword
+                  ? "text"
+                  : "password"
+              }
+              placeholder="Senha"
+              value={password}
+              onChange={(e) =>
+                setPassword(e.target.value)
+              }
+              required
+            />
+
+            <button
+              type="button"
+              className="eye-button"
+              onClick={() =>
+                setShowPassword(
+                  !showPassword
+                )
+              }
+            >
+              {showPassword ? "🔓" : "👁️"}
+            </button>
+
+          </div>
+
+          <small className="password-info">
+            Mínimo 8 caracteres, 1 letra maiúscula e 1 caractere especial.
+          </small>
 
           <label>Confirmar Senha</label>
-          <input
-            type="password"
-            placeholder="Confirme a senha"
-            value={confirmPassword}
-            onChange={(e) =>
-              setConfirmPassword(e.target.value)
-            }
-            required
-          />
+          <div className="password-wrapper">
+
+            <input
+              type={
+                showConfirmPassword
+                  ? "text"
+                  : "password"
+              }
+              placeholder="Confirme a senha"
+              value={confirmPassword}
+              onChange={(e) =>
+                setConfirmPassword(
+                  e.target.value
+                )
+              }
+              required
+            />
+
+            <button
+              type="button"
+              className="eye-button"
+              onClick={() =>
+                setShowConfirmPassword(
+                  !showConfirmPassword
+                )
+              }
+            >
+              {showConfirmPassword ? "🔓" : "👁️"}
+            </button>
+
+          </div>
 
           {error && (
             <span className="error">

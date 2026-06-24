@@ -184,3 +184,69 @@
         0 0 4px rgba(13, 201, 138, 0.4),
         0 0 8px rgba(0, 150, 100, 0.3);
 }
+
+.password-info {
+    display: block;
+
+    margin-top: 6px;
+    margin-bottom: 14px;
+
+    font-size: 12px;
+
+    color: #666;
+
+    line-height: 1.4;
+}
+
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 50px;
+}
+
+.eye-button {
+    position: absolute;
+
+    top: 50%;
+    right: 12px;
+
+    transform: translateY(-50%);
+
+    width: auto !important;
+    height: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    background: transparent !important;
+    border: none !important;
+
+    cursor: pointer;
+
+    font-size: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eye-button:hover {
+    background: transparent !important;
+    opacity: 0.7;
+}
+
+
+input::-ms-reveal,
+input::-ms-clear {
+    display: none;
+}
+
+
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-textfield-decoration-container {
+    display: none !important;
+}
